@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Photo Journal - 09/01/2019</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body class="container">
+    <header>
+      <!-- Page Title -->
+      <h1>My Photo Journal</h1>
+      <p>A collection of photographs I like, updated daily</p>
+    </header>
+    <main>
+      <!-- Image Post -->
+      <section>
+        <header>
+          <h2>The Cutest Puppy!</h2>
+          <p class="time-posted">
+            Posted <time datetime="2021-09-01">last year Sep 01, 2021</time>
+          </p>
+        </header>
+        <p>OMG I found the <em>CUTEST</em> puppy! Check it out!</p>
+        <p>
+          <img src="img/2959326615_af04f9878a_z.jpg" alt="CUTEST" />
+        </p>
+        <p>
+          This picture is
+          <cite
+            >"Blizzard, the pup in Antarctica", by Frank Harvey. From the
+            <a
+              href="https://www.flickr.com/photos/statelibraryofnsw/2959326615/"
+              >State Library of NSW</a
+            > </cite
+          >.
+        </p>
+      </section>
+      <section>
+        <!-- Comment Form -->
+        <form>
+          <h2 class="text-small">Leave a comment</h2>
+          <div>
+            Email:
+            <label for="email_input">Email:</label>
+            <input
+              id="email_input"
+              placeholder="email@domain.com"
+              type="email"
+              name="email"
+            />
+            <label for="password_input">Password:</label>
+            <input id="password_input" type="password" name="password" />
+          </div>
+          <div>
+            Comment:
+            <label for="comment_field">Comment:</label>
+            <textarea
+              class="form-control"
+              id="comment_field"
+              name="comment"
+            ></textarea>
+          </div>
+          <button type="submit" aria-label="Submit">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <!-- Author Info -->
+      <p>This journal was created by me using my own two hands.</p>
+      <address>
+        Contact me at <a href="mailto:me@here.com">me@here.com</a>, or at
+        <a href="tel:555-123-4567">(555) 123-4567</a>.
+      </address>
+      <p>&copy; 2019 The Author.</p>
+    </footer>
+  </body>
+</html>

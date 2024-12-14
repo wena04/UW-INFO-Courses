@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Management Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="javascripts/index.js"></script>
+    <script src="javascripts/utils.js"></script>
+    <script src="javascripts/businessInfo.js"></script>
+    <script src="javascripts/myIdentity.js"></script>
+  </head>
+
+  <body onload="init()">
+    <nav class="navbar bg-light h-auto">
+      <a href="/" class="my-auto ps-3 link-dark"><i class="bi bi-briefcase-fill h1"></i></a>
+      <div id="identity_div" class="ms-auto p-2 d-flex flex-row align-items-center">loading...</div>
+    </nav>
+
+    <div class="p-5">
+      <div class="mb-4">
+      <h2 class="pt-3">Info for user: <span id="username-span"></span></h2>
+        <div id="user_info_div" class="alert alert-info">
+        loading current user info...
+      </div>
+      </div>
+  
+      <div class="mb-4">
+      <h2>Info for Business: <span id="businessname-span"></span></h2>
+        <div id="business_info_div">loading business info...</div>
+      </div>
+
+      <div class="mb-4">
+        <h2 class="pt-3">All Employees</h2>
+          <div id="employee_info_div" class="alert alert-info">
+          loading employee info table...
+        </div>
+      </div>
+  
+      <div id="employee_edit" class="mb-4"></div>
+  
+      <h3 class="mt-5">Add Employee</h3>
+      <form id="add_employee" class="row g-3">
+        <div class="col-md-6">
+        <label for="employee_first_name" class="form-label">First Name</label>
+        <input id="employee_first_name" type="text" class="form-control" />
+        </div>
+      <div class="col-md-6">
+          <label for="employee_last_name" class="form-label">Last Name</label>
+        <input id="employee_last_name" type="text" class="form-control" />
+        </div>
+      <div class="col-md-6">
+          <label for="hourly_wage" class="form-label">Hourly Wage</label>
+        <input id="hourly_wage" type="text" class="form-control" />
+        </div>
+      <div class="col-md-6">
+          <label for="hours_worked" class="form-label">Hours Worked</label>
+        <input id="hours_worked" type="text" class="form-control" />
+        </div>
+      <div class="col-12">
+          <button type="button" onclick="addEmployee()" class="btn btn-primary">
+          Add Employee
+        </button>
+          <span id="add_status" class="text-success"></span>
+      </div>
+      </form>
+      
+      <div><a href="/">Return to Homepage</a></div>
+      
+      <hr class="mt-5">
+
+      <div class="d-flex justify-content-end align-items-center">
+        <p class="me-3 mb-0"><strong class="text-danger">Note</strong>: Deleting your business cannot be undone</p>
+        <button class="btn btn-danger" type="button" onclick="deleteBusiness()">
+          Delete Business
+        </button>
+      </div>
+    </div>
+    
+    
+  </body>
+</html>

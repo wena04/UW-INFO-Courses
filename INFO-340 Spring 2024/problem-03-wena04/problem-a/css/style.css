@@ -1,0 +1,52 @@
+svg > circle:nth-of-type(1),
+svg > circle:nth-of-type(2) {
+  fill: #5f5f5f;
+}
+
+svg > rect:nth-of-type(1),
+svg > rect:nth-of-type(2),
+svg > rect:nth-of-type(3),
+svg > rect:nth-of-type(4) {
+  opacity: 0;
+}
+
+svg > rect:nth-of-type(1) {
+  opacity: 1;
+}
+
+svg > circle:nth-of-type(3),
+svg > circle:nth-of-type(4) {
+  fill: white;
+}
+
+svg > path:nth-of-type(1),
+svg > path:nth-of-type(2) {
+  stroke: #5f5f5f;
+  stroke-width: 8px;
+}
+
+svg > path:nth-of-type(3) {
+  fill: #c0c0c0;
+  stroke: #bd250d;
+  stroke-width: 4px;
+}
+
+svg > path:nth-of-type(4) {
+  stroke: none;
+}
+
+svg > g:nth-of-type(1) > circle {
+  fill: #573d29;
+}
+
+svg > g:nth-of-type(2) > circle,
+svg > g:nth-of-type(2) > rect {
+  fill: #c0c0c0;
+  stroke: none;
+}
+
+svg > path:nth-of-type(3):hover {
+  fill: #bd250d;
+  stroke: #bd250d;
+  stroke-width: 4px;
+}

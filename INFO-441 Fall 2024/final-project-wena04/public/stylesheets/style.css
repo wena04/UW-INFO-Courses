@@ -1,0 +1,129 @@
+/* Body and Typography */
+body {
+  padding-top: 60px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
+/* Navbar */
+nav.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Styling */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 8px;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #0056b3;
+}
+
+.card-text {
+  color: #495057;
+}
+
+
+table {
+  background-color: #ffffff;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+}
+
+thead th {
+  color: #343a40;
+  text-align: left;
+  padding: 10px;
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.employee_button {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  font-family: "Arial", sans-serif;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.employee_button:hover {
+  color: #0056b3;
+}
+
+#add_employee .form-control {
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+}
+
+#add_status {
+  font-weight: bold;
+  color: #28a745;
+}
+
+#add_status.error {
+  color: #dc3545;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #343a40;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+h3 {
+  font-size: 1.75rem;
+  margin-bottom: 10px;
+}
+
+.alert {
+  font-size: 1.1rem;
+  border-radius: 5px;
+}
+
+.section-padding {
+  padding: 20px 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.container-fluid {
+  padding-left: 20px;
+  padding-right: 20px;
+}

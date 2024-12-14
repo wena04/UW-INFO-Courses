@@ -1,0 +1,151 @@
+/* your CSS goes here */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", Helvetica, sans-serif;
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.material-icons {
+  position: relative;
+  top: 5px;
+}
+
+.container {
+  padding: 1rem;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  background-color: #2c96bf;
+  padding: 0.5rem 0.5rem 1rem 0.5rem;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  display: inline;
+  margin: 0 1rem;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+}
+
+header {
+  color: white;
+  padding-top: 6rem;
+  padding-bottom: 1rem;
+  background-image: url("../img/paul-gilmore-145802-unsplash.jpg");
+  background-size: cover;
+  background-color: #0084af;
+  background-position: center;
+}
+
+header h1,
+header p {
+  color: white;
+}
+
+header p {
+  font-size: 1.25rem;
+  font-style: italic;
+}
+
+#menu {
+  background-color: #f0f0f0;
+}
+
+dd {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+dt {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+img {
+  height: 200px;
+  border-radius: 15px;
+}
+
+#about {
+  background-color: #e0e0e0;
+  line-height: 1.5;
+}
+
+footer {
+  color: white;
+  background-color: #3e1305;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer p {
+  color: white;
+  line-height: 1.25;
+  margin: 0;
+}
+
+footer p:last-child {
+  padding-top: 8px;
+  color: white;
+}
+
+li > a:hover,
+li > a:focus,
+li > a:active {
+  color: #f0f0f0;
+  border-bottom: 0.8rem solid #f0f0f0;
+  transition: all 0.25s ease-out;
+}
