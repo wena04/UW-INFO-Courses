@@ -1,22 +1,19 @@
 import express from "express";
-const router = express.Router();
+var router = express.Router();
 
-router.get("/myIdentity", (req, res) => {
-  // console.log("myIdentity route is being accessed");
-  if (req.session && req.session.isAuthenticated) {
-    console.log("User is logged in");
+router.get("/myIdentity", async function (req, res, next) {
+  let session = req.session;
+  if (session.isAuthenticated) {
     res.json({
       status: "loggedin",
       userInfo: {
-        name: req.session.account.name,
-        username: req.session.account.username,
+        name: session.account.name,
+        username: session.account.username,
       },
     });
   } else {
-    console.log("User is not logged in");
     res.json({
       status: "loggedout",
-      // error: "You must be logged in to access this information",
     });
   }
 });
