@@ -5,11 +5,7 @@ import logger from "morgan";
 import sessions from "express-session";
 
 import models from "./models.js";
-import apiv1Router from "./routes/api/v1/apiv1.js";
-import apiv2Router from "./routes/api/v2/apiv2.js";
 import apiv3Router from "./routes/api/v3/apiv3.js";
-
-import usersRouter from "./routes/api/v3/controllers/users.js";
 
 import WebAppAuthProvider from "msal-node-wrapper";
 
@@ -65,15 +61,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/v1", apiv1Router);
-app.use("/api/v2", apiv2Router);
 app.use("/api/v3", apiv3Router);
 
 const authProvider = await WebAppAuthProvider.WebAppAuthProvider.initialize(
   authConfig
 );
-
-app.use("/users", usersRouter);
 
 app.use(authProvider.authenticate());
 
