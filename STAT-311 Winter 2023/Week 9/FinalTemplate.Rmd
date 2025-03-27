@@ -1,0 +1,268 @@
+---
+title: "Logistic Regression Analysis"
+author: "Anthony Wen"
+date: "`r Sys.Date()`"
+output: 
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction (4 points)
+
+```{r dataimport}
+# You can feel free to modify this line to read the data in
+#  as you will only be submitting a completed PDF
+loanDefaultData<-read.csv("LoanDefaultData.csv")
+```
+
+In this study we will look at the different variables or characteristics of the people that will potentially request loans to determine whether or not a bank should grant their loan. In other words, it is for predicting loan default, whether a machine will say yes or no to someone requesting a loan. The data that was submitted had information such as the person's marital status, credit score and other variables that might have an impact on the person's loan default. This study would analyze if such variables would impact a person's loan default, just as the original study has also intended to predict with a special emphasis (out of personal interest) on whether there was evidence that default were impacted by the marital status or highest education level of the applicant. 
+
+# The Variables (8 points)
+
+The variables available for this analysis are:
+
+### Response:
+- Default (binary/Catagorical): This records whether or not the loan was defaulted on. It is the variable that we seek to predict in our logistic regression model。
+
+```{r response}
+table(loanDefaultData$Default)
+```
+
+### Predictors:
+
+```{r names}
+names(loanDefaultData)
+```
+
+- Age (numeric): a numeric variable that tells us the applicant's age.It has mean of 43.7 years or around 44 years old and a standard deviation of 14.96 years. It shows how most of the applicants are middle aged people. The range is from 18 years old to 69 years old
+
+```{r age}
+mean(loanDefaultData$Age)
+sd(loanDefaultData$Age)
+range(loanDefaultData$Age)
+hist(loanDefaultData$Age, main='Histogram of Age', xlab='Age of Applicant (Years)', freq=FALSE)
+```
+
+- Income (numeric): a numeric variable that tells us an applicant's annual income in USD. It has mean of 82351.62 or around 82 thousand USD of annual income and a standard deviation of 39177.07 USD. 
+
+
+```{r income}
+mean(loanDefaultData$Income)
+sd(loanDefaultData$Income)
+hist(loanDefaultData$Income, main='Histogram of Income', xlab='Income of Applicant  (USD)', freq=FALSE)
+```
+
+- LoanAmount (numeric): a numeric variable that tells us the loan amount requested by the applicant in USD or the amount of money that is being borrowed. It has mean of 128733.5 or around 129 thousand USD of annual income and a standard deviation of 70830.42 USD. The mean of the loan is much larger than the mean of the applicant's annual income, which shows how people are usually borrowing more money than they are making.
+
+```{r loan amount}
+mean(loanDefaultData$LoanAmount)
+sd(loanDefaultData$LoanAmount)
+hist(loanDefaultData$LoanAmount, main='Histogram of Loan Amount', xlab='Applicants Loan Amount  (USD)', freq=FALSE)
+```
+
+- CreditScore (numeric): a numeric variable that tells us the applicant's credit score to tell audience a applicant's creditworthiness. It has mean of 575.0686 or around 575 points/credit score and a standard deviation of 159.4175 or 159 points. The variability suggests a diverse set of credit scores among the applicants.
+
+```{r credit score}
+mean(loanDefaultData$CreditScore)
+sd(loanDefaultData$CreditScore)
+hist(loanDefaultData$CreditScore, main='Histogram of Credit Score', xlab='Credit Score  (Points)', freq=FALSE)
+```
+
+- MonthsEmployed (numeric): a numeric variable that tells us the number of months the applicant has been employed. It has mean of 60.15971 months or around 5 years of being employed and a standard deviation of 34.10338 months or almost 3 years.
+
+```{r months employed}
+mean(loanDefaultData$MonthsEmployed)
+sd(loanDefaultData$MonthsEmployed)
+hist(loanDefaultData$MonthsEmployed, main='Histogram of MonthsEmployed', xlab='Months Employed of Applicant', freq=FALSE)
+```
+
+- NumCreditLines (numeric): a numeric variable that tells us the number of credit lines the applicant has opened. It has mean of 2.47 lines (around 2 lines opened) and a standard deviation of 1.115464 lines (basically 1 line).
+
+```{r number of credit lines}
+mean(loanDefaultData$NumCreditLines)
+sd(loanDefaultData$NumCreditLines)
+table(loanDefaultData$NumCreditLines)
+```
+
+- InterestRate (numeric): a numeric variable that tells us the interest rate of the loan.It has mean of 13.61331% interest rate and a standard deviation of 6.661623% interest.
+
+```{r interest rate}
+mean(loanDefaultData$InterestRate)
+sd(loanDefaultData$InterestRate)
+hist(loanDefaultData$InterestRate, main='Histogram of Interest Rate', xlab='Applicants cards Interest Rate ', freq=FALSE)
+```
+
+- LoanTerm (numeric): a numeric variable that tells us the length of term of the loan in months. It has mean of 36.04457 months or around 3 years of length for the loan terms and a standard deviation of 16.94259 months or almost 1.5 years.
+
+```{r loan term}
+mean(loanDefaultData$LoanTerm)
+sd(loanDefaultData$LoanTerm)
+hist(loanDefaultData$LoanTerm, main='Histogram of Loan Term', xlab='Applicants Loan Term', freq=FALSE)
+```
+
+- Education (categorical): a categorical variable that tells us the highest level of education attained by the applicant. The number of applicants in each catagory are pretty similar, aka the standard deviation is not very high.
+
+```{r education}
+table(loanDefaultData$Education)
+```
+
+- EmploymentType (Categorical): a catagorical variable that tells us the type of employment of the applicant. The number of applicants in each catagory are pretty similar, aka the standard deviation is not very high.
+
+```{r employment type}
+table(loanDefaultData$EmploymentType)
+```
+
+- MaritalStatus (Categorical): a catagorical variable that tells us the marital status of the applicant. It's split into single, married, or divorced. The number of applicants in each catagory are pretty similar, aka the standard deviation is not very high.
+
+```{r marital status}
+table(loanDefaultData$MaritalStatus)
+```
+
+- HasCoSigner (binary/Categorical): a catagorical variable that tells us whether the loan application has a cosigner. It is a yes or no value.
+
+```{r has cosigner}
+table(loanDefaultData$HasCoSigner)
+```
+
+# Model Fitting (12 points)
+
+#### Instructions
+- Show code used to explore and fit a model to the data
+- Explain between code chunks why each step is being taken 
+- Detail the choices made to determine which variables belong in your model
+- Note that there is no 'correct' answer here, you will be assessed on your ability to justify choices made in fitting your model
+
+Here I utilize the step function with AIC scoring to determine the best model. To produce and test a variety of models, I utilize both forward and backward step functions. Since I predict based on the data initially that some variables will be more impactful than others, all models will include the variables 'Education' and 'MaritalStatus'. In addition, I focus on the AIC score/value a lot when looking into whether removing or adding a variable has an impact on the odds of defaulting.
+
+```{r model initializiation}
+# Initialize the full model with all variables
+full_model = glm(Default ~ Age + Income + LoanAmount + CreditScore + MonthsEmployed +
+                 NumCreditLines + InterestRate + LoanTerm + Education + EmploymentType +
+                 MaritalStatus + HasCoSigner, data=loanDefaultData, family = "binomial")
+
+# Initialize the basic model with key variables identified as essential
+basic_model = glm(Default ~ MaritalStatus + Education, data=loanDefaultData, family = "binomial")
+
+```
+
+```{r forwardsteps}
+step(basic_model, 
+     scope=list(lower=basic_model, upper=full_model), 
+     direction='forward', steps=25)
+```
+
+```{r backwardsteps}
+step(full_model, 
+     scope=list(lower=basic_model, upper=full_model), 
+     direction='backward', steps=25)
+```
+
+As can be observed from the step functions, both models returned the same models, which shows that the two main variables of interest -- maritial status and education -- do play an important role in the prediction. Now, we will explore whether interactions with these terms are useful for the model. I started initially with only marital status and education as they were the variable of interest for me.
+
+```{r no interaction model}
+current.model = glm(formula = Default ~ MaritalStatus + Age + Income + LoanAmount + CreditScore + MonthsEmployed + NumCreditLines + InterestRate + LoanTerm + Education + EmploymentType + HasCoSigner, family = "binomial", data = loanDefaultData)
+
+interactions.model=glm(formula = Default ~ (MaritalStatus + Education) * (Age + Income + LoanAmount + CreditScore + MonthsEmployed + NumCreditLines + InterestRate + LoanTerm + EmploymentType + HasCoSigner), family = "binomial", data = loanDefaultData)
+```
+
+In this model, I began with a base model that started with marital status and education (like I mentioned before) and added all the predictors. The stepwise regression shows that interaction between marital status and number of credit lines really increased the model's fit as the AIC value got lower.
+
+```{r forwardsteps interaction}
+step(current.model, 
+     scope=list(lower=current.model, upper=interactions.model), 
+     direction='forward', steps=25)
+```
+
+```{r backwardsteps interaction}
+step(interactions.model, 
+     scope=list(lower=current.model, upper=interactions.model), 
+     direction='backward', steps=25)
+```
+
+Once again both methods return the same model, and have included only the interaction terms between MaritalStatus and NumCreditLines (marital status and number of credit line an applicant has) 
+
+```{r interaction model final}
+current.model = glm(formula = Default ~ MaritalStatus + Education + Age + Income + 
+    LoanAmount + CreditScore + MonthsEmployed + NumCreditLines + InterestRate + 
+    LoanTerm + EmploymentType + HasCoSigner + MaritalStatus:NumCreditLines, 
+    family = "binomial", data = loanDefaultData)
+```
+
+Lastly, with agreement between both forward and backward step procedures, we assess the significance of terms in the model.
+
+```{r model summary}
+summary(current.model)
+```
+
+The variable that tells us that any characteristic that has to do with an applicant's marital status being married is insignificant on its own except for Marital Status Single and its interaction with number of credit lines. For example, the MaritalStatusMarried, MaritalStatusMarried:NumCreditLines. In addition, the Education levels, LoanTerm, EmploymentTypePart-time appears to be insignificant as well. This proves that my initial guess was wrong, that these terms do not have a effect on default as I thought they would be. Thus, I removed them one by one to produce our final model. 
+
+```{r model final}
+final.model = glm(formula = Default ~ Age + Income + LoanAmount + CreditScore + 
+    MonthsEmployed + NumCreditLines + InterestRate + LoanTerm + 
+    EmploymentType + Education, family = "binomial", data = loanDefaultData)
+summary(final.model)
+```
+
+After removing them, I realized that with the removal, the AIC value got even worse, which was what I focused on. I also noticed there were insignificant terms like the highest education levels that the applicant has obtained and also the loan term. Thus, I removed those terms as well.
+
+```{r model final part 2}
+final.model = glm(formula = Default ~ Age + Income + LoanAmount + CreditScore + 
+    MonthsEmployed + NumCreditLines + InterestRate + LoanTerm, family = "binomial", data = loanDefaultData)
+summary(final.model)
+```
+
+Even after the removal, the model still got worse as its AIC model value got higher. Since I was focusing mainly on this score, this made me realized that I have probably removed a variable that was important. It might have been because the variable that I removed was not so important on its own but really important if you took into consideration its interaction with other terms. I tested again by adding back some variables one by one or multiple at one time, but the model just keeps getting worse and worse. This made me question if it is because all the variables that I have thought before were actually all significant factors. Maybe the initial model with everything was actually the best model already (looking mostly at AIC value). Thus, I tried some more combinations by observing the initial dataset again. In the end, I came to the conclusion that not removing any of the variables but taking into considering the marriage and number of credit line's interaction is by far the best model in terms of AIC.
+
+```{r model final part 3}
+final.model = glm(formula = Default ~ MaritalStatus + Education + Age + Income + 
+    LoanAmount + CreditScore + MonthsEmployed + NumCreditLines + InterestRate + 
+    LoanTerm + EmploymentType + HasCoSigner + MaritalStatus:NumCreditLines, 
+    family = "binomial", data = loanDefaultData)
+summary(final.model)
+```
+
+# Model summary (8 points)
+
+The final resulting model found was:
+
+log-odds(Default) = -0.342 + -0.985 * MaritalStatusSingle - 0.309 * MaritalStatusMarried + 0.252 * EducationHighSchool + 0.134 * EducationMaster's + 0.0365 * EducationPhD - 0.0365 * Age - 0.00000655 * Income + 0.00000316 * LoanAmount - 0.00114 * CreditScore - 0.00930 * MonthsEmployed + 0.0301 * NumCreditLines + 0.0648 * InterestRate - 0.00335 * LoanTerm + 0.266 * EmploymentTypePart-time + 0.437 * EmploymentTypeSelf-employed + 0.554 * EmploymentTypeUnemployed - 0.309 * HasCoSignerYes - 0.001395 * MaritalStatusMarried:NumCreditLines + 0.3510 * MaritalStatusSingle:NumCreditLines
+
+Each term in the model is statistically significant except for marital status, education level and loanTerm, but the inclusion of the interaction term  MaritalStatusSingle and NumCreditLines which is significant indicates that we keep the marital status term as well.
+
+The effect on the odds of each of the terms are listed below.
+
+```{r odds}
+oddsimpact = exp(final.model$coefficients)
+oddsimpact
+```
+
+Note: The baseline individual in this study is a divorced individual with a Bachelor's level of education and average values for continuous predictors like Age and Income.
+
+- Marital Status: is not a significant factor that effects our model a lot individually as its p-value is greater than 0.05, but I kept it for reasons explained above (AIC value of the model, interaction with others, as well as since its the topic of interest).
+- MaritalStatus = Single: Being single - as compared to being another baseline catagory - divorced, saw a decrease in the probability of defaulting by about 0.373 times or 62.7% decrease.  
+- MaritalStatus = Married: Being married, as compared to being divorced, has caused the probability to default by about 0.734 times as well.
+- Education = HighSchool, Phd or Masters: Having a education level that is not Bachelors (the other baseline catagory) all saw about the same increase as the baseline in the probability of defaulting. With high school having a increase of 1.29 times, with PhD of having a increase of 1.04 times, and Masters having a increase of 1.14 times. Thus, it is not very significant impact to the model, but for the same reason I kept marital status, I kept education as well.
+- Age: each year older the applicant is, the probability of default actually does not decrease much (only about 3%) however, if taken as a whole, it decreases by about 0.964 times. In other words, this was included as it impacted the AIC value of the model in subtle ways.
+- CreditScore: decreases the odds of default by a factor of approximately 0.999 times.This shows that each point increase does not effect much, but if you take into consideration multiple points, the effects might stack up. Thus, I kept this value as well.
+- LoanTerm: Each additional term month decreases the odds by about 0.997 times. 
+- HasCoSignerYes: Having a co-signer as compared to the baseline of having no co-signer decreases the odds of default by a factor of about 0.73.
+- 1 USD dollar higher income or loan amount have a very small effect on the odds, close to 1, which indicates a negligible change. However, if taken all together in large sums (like 1 million USD increase each time), it is statistically significant. Thus, it is included in the model.
+- Being employed as either part time or self-employed, as compared to the baseline of full time, increases the odds of default by about 1.55 times or 1.31 times.
+- Each additional month employed decreases the probability of default by about 0.991 times. Thus, not really significant but I kept it for its effect on the AIC value.
+- Additional credit lines very slightly increase the probability of default by a factor of approximately 1.03 times. 
+- interest rates: Each percentage point increase increases the probability about 1.07 times
+- MaritalStatusMarried:NumCreditLines: Being single and having more credit lines decrease the probability of defaulting more than if someone is divorced, about 0.999 times more.  
+- MaritalStatusSingle:NumCreditLines: Being single and having more credit lines increases the probability of defaulting more than if someone is divorced after accounting for the interaction with the number of credit lines, about 1.42 times more. Compared to being married though, it does increase the probability of default a lot more as well. 
+
+# Conclusion (8 points)
+
+This analysis demonstrated that almost all variables in the original dataset had a significant impact on defualt if solely defining a good model with its AIC value and its interactions and if marital status and highest level of education was focused on more in the study. After some trial and error and steps mentioned in the above report, an applicant's personal demographics, financial status, and loan terms are all significant predictors of loan default, with marital status and employment type showing particularly strong associations (also including their interaction terms). The presence of a co-signer also impacted the odds of default.
+
+The variable that positively impact the odds are the number of credit lines, being employed as part time or self-employed, having higher loan amount, and having more months being employed or not a bachelor as the highest degree.
+
+The variable that negatively impact the odds are having a co-signer, higher income, marital status, age, credit score, loan term and being unemployed.
+
+Overall this analysis indicates that marital status and education levels do not impact the odds of default as other variables when considered individually, but considering the relationships it had with the number of credit lines and through trial and error of taking out variables in the AIC models and checking its effect on the AIC value, it was kept in the final model. It shows that there is a preference for a divorced, long term employee that does not have a bachelors degree and is requesting a higher loan amount holding more credit lines as well. It seems that someone who might be counted as "more in need" would be more likely to be defaulted. 

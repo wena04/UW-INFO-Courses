@@ -1,0 +1,91 @@
+---
+title: "Writeup Assignment 0"
+author: "Anthony Wen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#DO NOT EDIT THIS CODE CHUNK
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Please complete the following:
+
+* Address any questions or code below.
+* Compile the document into an HTML file.
+* Open the HTML file in your browser.
+* Print the file to a pdf document.
+* (Note that making an HTML document then printing to PDF works better than creating a PDF directly.)
+* Submit to Gradescope.
+* **Paginate individual questions correctly or your assignment will not be graded and will require resubmission.**
+
+
+## HW0 Programming Assignment
+
+For write ups that build upon the programming assignments, you will need to run all of the programming assignment code within the RMarkdown file. **Copy all of your code from Assignment 0 into the block below.**
+
+```{r HW0Code}
+#Paste your entire HW0 Programming assignment code here
+## ## ## ## ## DO NOT MODIFY BELOW ## ## ## ## ## 
+sampleData1<-read.csv('SampleData.csv',header=FALSE)
+sampleData2<-matrix(20:28,nrow=3)
+## ## ## ## ## DO NOT MODIFY ABOVE ## ## ## ## ## 
+
+# PART 1
+# Create a vector of length 5 with values 1, 2, 3, 4, 7
+# Call it "myVector"
+myVector <- c(1,2,3,4,7)
+
+# PART 2
+# Create a string containing your name
+# Call it "myString"
+myString <- "Anthony Wen"
+
+# PART 3
+# Create a function that takes a single variable and
+#  returns a vector equal to the sum of the rows of 
+#  a 3x3 matrix or dataframe
+# Call it "myFunction"
+myFunction <- function(input){
+  mysum <- c(0,0,0)
+  for (i in 1:3){
+    for (j in 1:3){
+      mysum[i] <- mysum[i]+input[i,j]
+    }
+  }
+  return(mysum)
+}
+
+## ## ## ## ## DO NOT MODIFY BELOW ## ## ## ## ## 
+# The code below should return TRUE
+myResult1<-myFunction(sampleData1)
+all(myResult1==c(6,15,24))
+myResult2<-myFunction(sampleData2)
+all(myResult2==c(69,72,75))
+## ## ## ## ## DO NOT MODIFY ABOVE ## ## ## ## ## 
+```
+
+## This section is just here to take up space so the document is at least 2 pages. 
+
+Don't change this section at all, I worked really hard on it.
+
+* If you change it, all my efforts will have been for naught. 
+* We need to ensure the document is at least 2 pages long to allow for proper paginating.
+* If somehow your document isn't two pages, are you sure you printed it as a PDF from the html?
+
+> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+## Including Graphics
+
+You can also embed graphics into your report using the following code:
+
+![University of Washington Admission Statistics](UW Admission Stats.jpg)
+
+Citation: https://www.thoughtco.com/washington-gpa-sat-act-data-786744
+
+You will need to put the file in the same `workspace` as this RMD file to include it in the document, or it will produce a broken image link.
+
+**Find a graphical display of data**. This should be a display of a dataset that is conveyed with visual information rather than via primarily numbers. Graphics of the image should convey the data directly, not just serve as decoration. This can be something as simple as a bar graph, scatter plot, pie chart, line graph or otherwise. Ideally the graphical display will relate to a topic of interest to you.
+
+**Save the graphical display as a file within the workspace of this document. Edit the code above to include your graphic in the document. Your graphical display may be used in future exercises in the course, so please do your best to provide a citation that can direct us to the source of your graphical display.**

@@ -1,0 +1,224 @@
+---
+title: "Logistic Regression Analysis"
+author: "Anne Wagner"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction (4 points)
+
+[TIP FOR YOUR ANALYSIS: You should briefly discuss both the data you will analyze and the benefit of such an analysis]
+
+```{r dataimport}
+callbackData<-read.csv("callbackData.csv")
+```
+
+[NOTE: When adding code chunks, they should take the format seen below]
+
+```{r uniquename}
+# The line above must contain {r ...} to specify the type of code that will be included
+#  and a unique identifier for the code block in place of "..."
+# If repeated names are used, Rstudio will throw an error when trying to compile
+```
+
+In this analysis we look at data gathered from an experiment to assess callbacks on job applications for fictional candidates. The submitted resumes varied wildly, but specifically included names that would be perceived as either male or female, and either black or white. The original purpose of this data gathering was to assess whether there was evidence that callbacks were impacted by the perceived sex or race of the applicant. 
+
+# The Variables (8 points)
+
+[TIP FOR YOUR ANALYSIS: List all the variables, with some information to summarize their distribution of values, also specify the type of variable as either categorical or numeric. Numeric variables can be plotted in a histogram, while categorical variables can be summarized with a table, but other options are available if you wish to explore those.]
+
+The variables available for this analysis are:
+
+### Response:
+- Callback (Binary/categorical): This records whether the submitted resume received a callback for an interview. This is the variable we seek to predict with our logistic regression model.
+
+```{r response}
+table(callbackData$call)
+```
+
+### Predictors:
+
+```{r names}
+names(callbackData)
+```
+
+- city (Binary/categorical): This variable looked at the city in which the job being applied to was located. There are only two cities in this study, Chicago and Boston.
+```{r cityvar}
+table(callbackData$city)
+```
+
+- college (Binary/categorical): This variable takes value 1 for resumes that list a college degree, and 0 otherwise.
+```{r collegevar}
+table(callbackData$college)
+```
+
+- yearsexp (Numeric): This variable lists the years of relevant working experience of the applicant. It has mean 7.84 years and standard deviation of 5.04 years.
+```{r yearsexpvar}
+mean(callbackData$yearsexp)
+sd(callbackData$yearsexp)
+hist(callbackData$yearsexp, main='Histogram of Yearsexp', xlab='Years of Experience', freq=FALSE)
+```
+
+- honors (Binary/categorical): This variable records whether or not the applicant's resume listed any relevant honors or not.
+
+```{r honorsvar}
+table(callbackData$honors)
+```
+
+- militaryexp (Binary/categorical): This variable records whether or not the applicant's resume listed military experience.
+
+```{r militaryexpvar}
+table(callbackData$militaryexp)
+```
+
+- emailincluded (Binary/categorical): This variable records whether or not the resume included a contact email. This dataset is... fairly old.
+
+```{r emailincludedvar}
+table(callbackData$emailincluded)
+```
+
+- sex (Binary/categorical): This variable records the perceived sex of the name of the applicant. It takes values of "Male" and "Female".
+
+```{r sexvar}
+table(callbackData$sex)
+```
+
+- race (Binary/categorical): This variable records the perceived race of the name of the applicant. It takes values of "White" and "Black".
+
+```{r racevar}
+table(callbackData$race)
+```
+
+- computerskills (Binary/categorical): This variable records whether or not the resume included any relevant computer skills.
+
+```{r computerskillsvar}
+table(callbackData$computerskills)
+```
+
+- workinschool (Binary/categorical): This variable records whether or not the resume included a work history during education.
+
+```{r workinschoolvar}
+table(callbackData$workinschool)
+```
+
+# Model Fitting (12 points)
+
+[NOTE: You should detail the methods used to fit the model, and any other models that were explored in the process.]
+
+Here we utilize the step function with AIC scoring to determine the best model. To produce and test a variety of models, we utilize both forward and backward step functions. Due to the specific purpose of this analysis, all models will include the variables 'sex' and 'race', as the impact of these variables on callbacks was of specific interest to the researchers. 
+
+```{r model initializiation}
+fullmodel=glm(call~city+college+yearsexp+honors+militaryexp+
+                emailincluded+sex+race+computerskills+
+                workinschool, data=callbackData, family = "binomial")
+basicmodel=glm(call~race+sex, data=callbackData, family = "binomial")
+```
+
+```{r forwardsteps}
+step(basicmodel, 
+     scope=list(lower=basicmodel, upper=fullmodel), 
+     direction='forward', steps=25)
+```
+
+```{r backwardsteps}
+step(fullmodel, 
+     scope=list(lower=basicmodel, upper=fullmodel), 
+     direction='backward', steps=25)
+```
+As can be observed from the step functions, both models returned are identical (with some reordering of variables). Once again, as the variables 'sex' and 'race' were of interest, we will explore whether interactions with these terms are useful for the model.
+
+[NOTE: If you wish to explore a large number of interaction terms, you can utilize standard mathematical notation of a*(b+c+d) to see interactions between the variable a and variables b, c, and d. This is done for both the race and sex variables as seen below.]
+
+```{r no interaction model}
+current.model = glm(formula = call ~ race + sex + honors + city + yearsexp + 
+    emailincluded + workinschool + militaryexp, family = "binomial", 
+    data = callbackData)
+interactions.model=glm(formula = call ~ (race + sex) * (honors + city + yearsexp + 
+    emailincluded + workinschool + militaryexp), family = "binomial", 
+    data = callbackData)
+```
+
+```{r forwardsteps interaction}
+step(current.model, 
+     scope=list(lower=current.model, upper=interactions.model), 
+     direction='forward', steps=25)
+```
+
+```{r backwardsteps interaction}
+step(interactions.model, 
+     scope=list(lower=current.model, upper=interactions.model), 
+     direction='backward', steps=25)
+```
+
+Once again both methods return the same model, and have included interaction terms between sex and city, sex and military experience, and sex and honors.
+
+```{r interaction model final}
+current.model = glm(formula = call ~ race + sex + honors + city + yearsexp + 
+    emailincluded + workinschool + militaryexp + sex:city + sex:militaryexp + 
+    sex:honors, family = "binomial", data = callbackData)
+```
+
+Lastly, with agreement between both forward and backward step procedures, we assess the significance of terms in the model.
+
+```{r model summary}
+summary(current.model)
+```
+
+The variable recording whether the applicant worked in school and the interaction between sex and honors both appear non-significant. As neither of these variables are of particular interest to our model, we remove them both to produce our final model.
+
+```{r model final}
+final.model = glm(formula = call ~ race + sex + honors + city + yearsexp + 
+    emailincluded + militaryexp + sex:city + sex:militaryexp, 
+    family = "binomial", data = callbackData)
+summary(final.model)
+```
+
+With the removal of these two terms, it appears the term 'emailincluded' is also not significant. As once again this does not represent an important variable for this analysis, we choose to remove it from the model.
+
+```{r model final part 2}
+final.model = glm(formula = call ~ race + sex + honors + city + yearsexp + 
+    militaryexp + sex:city + sex:militaryexp, 
+    family = "binomial", data = callbackData)
+summary(final.model)
+```
+
+# Model summary (8 points)
+[NOTE: This section should detail the final model and each of the terms in the model, as well as their effects on the odds.]
+
+The final resulting model found was:
+
+log-odds(call) ~ -2.536 + 0.451 * (race=White) + -0.774 * (sex=Male) + 0.737 * honors + -0.630 * (city=Chicago) + 0.0252 * yearsexp + -0.530 * militaryexp + 1.240 * (sex=Male:city=Chicago) + 0.973 * (sex=Male:militaryexp)
+
+Each term in the model is statistically significant except for military experience, but the inclusion of the interaction term which is significant indicates that we keep the military experience term as well.
+
+The effect on the odds of each of the terms are listed below.
+
+```{r odds}
+oddsimpact = exp(final.model$coefficients)
+oddsimpact
+```
+Note: The baseline individual in this study is a black female without military experience applying to a job in Boston.
+
+- race=White: White respondents saw a 1.57 times increase in the odds of receiving a callback.
+- honors: Resumes with listed honors saw a 2.09 times increase in the odds of receiving a callback.
+- city=Chicago: Compared with applications in Boston, female applicants in Chicago saw a 0.53 times reduction in odds of receiving a callback.
+- yearexp: All other variables held constant, a one year increase in experience was equivalent to a 1.03 times increase in the odds of receiving a callback.
+- militaryexp: Resumes listing military experience for female applicants saw a 0.589 times reduction in the odds of receiving a callback.
+- sex=Male: Male applicants without military experience applying in Chicago saw a 0.46 times decrease in the odds of receiving a callback.
+- sex=Male:city=Chicago: Male applicants applying in Chicago saw a 3.45 times increase in their odds of receiving a callback compared to male applicants in Boston.
+- sex=Male:militaryexp: Male applicants with military experience saw a 2.65 times increase in their odds of receiving a callback compared to female applicants with military experience.
+
+# Conclusion (8 points)
+[NOTE: This section should note the conclusions of the analysis, including identifying which variables positively and negatively impacted the odds for this data]
+
+This analysis demonstrated that the variables of perceived race, perceived sex, honors, years experience, and military experience of the applicant impacted their odds of a callback. The city of the job being applied to also had a strong impact on callbacks. It was also shown that military service and the city being applied to impacted the odds of callbacks differently for men and women applying to jobs. 
+
+The variables that positively impacted callback odds were race being white, honors, years of experience, and for specifically male applicants the job being in Chicago or military experience.
+
+The variables that negatively impacted callback odds were sex being male for applicants in Boston, applications in Chicago, and military experience for women.
+
+Overall this analysis indicates a preference for perceived white candidates over perceived black candidates. There were also interesting relationships between the perceived sex of the candidates and both the city being applied to or military service.
