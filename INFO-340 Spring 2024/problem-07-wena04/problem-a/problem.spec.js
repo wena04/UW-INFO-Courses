@@ -1,5 +1,3 @@
-const raf = require('raf') //fix raf warning, redux!
-
 import React from 'react';
 //updated to use RTL, but still checking internals (doing it badly)
 import { render, screen, waitFor } from '@testing-library/react';
@@ -35,21 +33,21 @@ describe('The Senator listing app', () => {
   
   describe('the implemented `App` component', () => {
     it('renders without crashing', () => {
-      const { App } = require('./src/components/App');
+      const App = require('./src/components/App').default;
       render(<App senatorsList={[]} />);
     });
   
     it('has the `container` CSS class', () => {
-      const { App } = require('./src/components/App');
+      const App = require('./src/components/App').default;
       const { container } = render(<App senatorsList={[]} />);
       expect(container.firstChild.classList.contains('container')).toBe(true);
     })
 
     it('contains a heading', () => {
-      const { App } = require('./src/components/App');
+      const App = require('./src/components/App').default;
       const { container } = render(<App senatorsList={[]} />);
       let heading = container.querySelector('h1');
-      expect(heading.textContent).toBe('US Senators (Jan 2022)');
+      expect(heading.textContent).toBe('US Senators (Aug 2024)');
     })
 
     it('renders a SenatorTable', () => {
@@ -59,7 +57,7 @@ describe('The Senator listing app', () => {
         SenatorTable: jest.fn(() => <div data-testid="SenatorTable" />)
       }))
 
-      const { App } = require('./src/components/App');
+      const App = require('./src/components/App').default;
       render(<App senatorsList={[]} />);
       expect(screen.getByTestId('SenatorTable')).toBeInTheDocument(); //contains a SenatorTable
 
@@ -146,7 +144,7 @@ describe('The Senator listing app', () => {
       });
 
       expect(container.querySelectorAll('tr').length).toBe(1);
-      expect(container.querySelectorAll('tr > td').length).toBe(4); //has the 4 required cells
+      expect(container.querySelectorAll('tr > td').length).toBe(3); //has the 3 required cells
     })
 
     it('renders the correct cells based on the props', () => {
@@ -161,7 +159,6 @@ describe('The Senator listing app', () => {
       expect(cells[0].textContent).toEqual('Test Sen 1');
       expect(cells[1].textContent).toEqual('D - AB');
       expect(cells[2].innerHTML).toEqual('<a href="tel:123-456-789">123-456-789</a>'); //just hard-code it for now
-      expect(cells[3].innerHTML).toEqual('<a href="https://twitter.com/test1">@test1</a>');
     })
   })
 })
