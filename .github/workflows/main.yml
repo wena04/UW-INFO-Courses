@@ -3,6 +3,15 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        problem-folder:
+          - "problem-01-wena04/problem-a"
+          - "problem-02-wena04/problem-a"
+          - "problem-02-wena04/problem-b"
+          # - "problem-03-wena04/problem-a"
+
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js 22.x
@@ -10,11 +19,11 @@ jobs:
         with:
           node-version: 22.x
       - run: npm install jest
-        working-directory: ./INFO-340 Spring 2024/problem-01-wena04/problem-a
+        working-directory: ./INFO-340 Spring 2024/${{ matrix.problem-folder }}
       - run: npm install
-        working-directory: ./INFO-340 Spring 2024/problem-01-wena04/problem-a
+        working-directory: ./INFO-340 Spring 2024/${{ matrix.problem-folder }}
       # - run: npm run build --if-present
       - run: npm test
-        working-directory: ./INFO-340 Spring 2024/problem-01-wena04/problem-a
+        working-directory: ./INFO-340 Spring 2024/${{ matrix.problem-folder }}
         env:
           CI: true
