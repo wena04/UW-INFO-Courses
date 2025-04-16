@@ -10,7 +10,9 @@ jobs:
           - "problem-01-wena04/problem-a"
           - "problem-02-wena04/problem-a"
           - "problem-02-wena04/problem-b"
-          # - "problem-03-wena04/problem-a"
+          - "problem-03-wena04/problem-a"
+          - "problem-03-wena04/problem-b"
+          - "problem-03-wena04/problem-c"
 
     steps:
       - uses: actions/checkout@v4
