@@ -13,6 +13,11 @@ jobs:
           - "problem-03-wena04/problem-a"
           - "problem-03-wena04/problem-b"
           - "problem-03-wena04/problem-c"
+          - "problem-04-wena04/problem-a"
+          - "problem-04-wena04/problem-b"
+          - "problem-05-wena04/problem-a"
+          - "problem-05-wena04/problem-b"
+          - "problem-05-wena04/problem-c"
 
     steps:
       - uses: actions/checkout@v4
