@@ -1,5 +1,3 @@
-const raf = require('raf') //fix raf warning, redux!
-
 import React from 'react';
 //updated to use RTL, but still checking internals (doing it badly)
 import { render, screen } from '@testing-library/react';
@@ -54,21 +52,21 @@ describe('The pet adoption app', () => {
       }))
       jest.doMock('./src/components/PetList', () => ({
         __esModule: true,
-        default: jest.fn(() => <div data-testid="PetList" />)
+        PetList: jest.fn(() => <div data-testid="PetList" />)
       }))
 
       //confirm component structure (around mocks)
-      const PetList = require('./src/components/PetList').default
+      const PetList = require('./src/components/PetList')
       const {AboutNav, BreedNav} = require('./src/components/Navigation')
       expect(AboutNav).toBeDefined(); //AboutNav should be a *named* export
       expect(BreedNav).toBeDefined(); //BreedNav should be a *named* export
-      expect(PetList).toBeDefined(); //PetList needs to be a *default* export
+      expect(PetList).toBeDefined(); //PetList needs to be a *named* export
 
       const App = require('./src/components/App').default;
       const { container } = render(<App pets={TEST_PETS} />);
 
       //header
-      expect(container.querySelectorAll('.jumbotron.jumbotron-fluid').length).toBe(1);
+      expect(container.querySelectorAll('header').length).toBe(1);
       expect(container.querySelector('h1').textContent).toEqual("Adopt a Pet");
 
       //main (includes columns)
@@ -126,7 +124,7 @@ describe('The pet adoption app', () => {
   it('renders the PetList component with PetCards', () => {
     jest.dontMock('./src/components/PetList'); //"unmock" just in case?
     
-    const PetList = require('./src/components/PetList').default; //now render for real!
+    const { PetList } = require('./src/components/PetList'); //now render for real!
     const { container } = render(<PetList pets={TEST_PETS} />);
 
     expect(container.querySelector('h2').textContent).toEqual('Dogs for Adoption'); //check heading
