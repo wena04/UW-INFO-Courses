@@ -1,5 +1,3 @@
-const raf = require('raf') //fix raf warning, redux!
-
 import React from 'react';
 //updated to use RTL, but still checking internals (doing it badly)
 import { render, screen } from '@testing-library/react';
