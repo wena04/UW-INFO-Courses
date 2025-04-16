@@ -21,10 +21,10 @@ jobs:
           - "problem-06-wena04/problem-a"
           - "problem-06-wena04/problem-b"
           - "problem-06-wena04/problem-c"
-          # - "problem-07-wena04/problem-a"
-          # - "problem-07-wena04/problem-b"
-          # - "problem-07-wena04/problem-c"
-          # - "problem-08-wena04/problem-a"
+          - "problem-07-wena04/problem-a"
+          - "problem-07-wena04/problem-b"
+          - "problem-07-wena04/problem-c"
+          - "problem-08-wena04/problem-a"
           # - "problem-09-wena04/problem-a"
 
     steps:
