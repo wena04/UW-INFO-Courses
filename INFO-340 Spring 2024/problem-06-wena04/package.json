@@ -11,6 +11,7 @@
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
+    "@babel/runtime": "^7.24.6",
     "cheerio": "^1.0.0-rc.12",
     "jest-environment-jsdom": "^29.7.0",
     "jest-style-matchers": "^0.1.3",
