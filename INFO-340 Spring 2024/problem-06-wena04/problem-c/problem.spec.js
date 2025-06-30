@@ -150,7 +150,7 @@ describe("View.js module", () => {
       ); //has correct content
 
       button.trigger("click"); //click the button
-      expect(testCallback).toHaveBeCalled(); //callback is executed on button click
+      expect(testCallback).toHaveBeenCalled(); //callback is executed on button click
 
       expect(elem.text()).toEqual("done " + incompleteTasks[index].description); //includes button
     });
